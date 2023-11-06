@@ -80,14 +80,33 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public int edgeLengthSum() {
-        return 0;
+        int sum = 0 ;
+        Set<E> alledges = allEdges();
+        List<E> converted = new ArrayList<>(alledges);
+        for(E edge : converted)
+        {
+            int length = edge.length();
+            sum = sum + length;
+        }
+        return sum;
 
 
     }
 
     @Override
     public boolean removeEdge(E e) {
-        return false;
+        Set<V> allvertices = allVertices();
+        boolean removed = false;
+        for(V v : allvertices)
+        {
+            if(hasEdge(e.v1(),e.v2()))
+            {
+                adjacencyList.get(v).remove(e);
+                removed = true;
+            }
+        }
+
+        return removed;
     }
 
     @Override
@@ -137,14 +156,33 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
     @Override
     public Set<V> allVertices()
     {
-        Set<V> listofvertices = new HashSet<>();
-        listofvertices = adjacencyList.keySet();
+        Set<V> listofvertices = adjacencyList.keySet();
         return listofvertices;
     }
 
     @Override
     public Set<E> allEdges() {
-        Set<E> listofalledges = new HashSet<>();
+        List<E> alledge1 = new ArrayList<>();
+        Set<V> allvertices =  allVertices();
+        for(V v : allvertices)
+        {
+           List<E> edgelist = adjacencyList.get(v);
+           for(E edge : edgelist)
+           {
+               alledge1.add(edge);
+           }
+        }
+        for(int i = 0; i < alledge1.size() - 1 ; i++)
+        {
+            for(int j = i+1 ; j < alledge1.size(); j++ )
+            {
+                if(alledge1.get(i).equals(alledge1.get(j)))
+                {
+                    alledge1.remove(alledge1.get(j));
+                }
+            }
+        }
+        Set<E> listofalledges = new HashSet<>(alledge1);
 
         return listofalledges;
     }
@@ -165,7 +203,12 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public Map<V, E> getNeighbourhood(V v) {
-        return null;
+        Map<V,E> neighbourood = new HashMap<>();
+        for(E edge : adjacencyList.get(v))
+        {
+            neighbourood.put(edge.v2(),edge);
+        }
+        return neighbourood;
     }
 
     @Override
