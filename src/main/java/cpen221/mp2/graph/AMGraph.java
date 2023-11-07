@@ -19,12 +19,23 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public boolean addVertex(V v) {
-        boolean vertexaddition = false;
-        if (adjacencyList.size() == maxVert) {
+        boolean vertexaddition;
+
+        if (adjacencyList.size() == maxVert)
+        {
             return false;
-        } else if (hasVertex(v)) {
+        }
+        else if (hasVertex(v))
+        {
             vertexaddition = false;
-        } else {
+        }
+        else if(adjacencyList.isEmpty())
+        {
+            adjacencyList.put(v,new ArrayList<>());
+            vertexaddition = true;
+        }
+        else
+        {
             adjacencyList.put(v, new ArrayList<>());
             vertexaddition = true;
         }
@@ -39,10 +50,11 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public boolean addEdge(E e) {
-        boolean EdgeADD = false;
+        boolean EdgeADD ;
         if (!hasEdge(e) || !hasVertex(e.v1()) || !hasVertex(e.v2())) {
             return false;
-        } else {
+        } else
+        {
             adjacencyList.get(e.v1()).add(e);
             EdgeADD = true;
 
@@ -111,17 +123,19 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public boolean removeEdge(V v1, V v2) {
-        boolean result = false;
+        boolean result = false ;
         if(hasEdge(v1,v2))
         {
-            adjacencyList.get(v1).remove(v1);
+            E e = (E) new Edge<>(v1,v2);
+            adjacencyList.get(v1).remove(e);
+            result = true;
         }
-        return false;
+        return result;
     }
 
     @Override
     public boolean removeVertex(V v) {
-        boolean removal = false;
+        boolean removal ;
         if (adjacencyList.isEmpty()) {
             return false;
         } else if (adjacencyList.containsKey(v))
@@ -139,25 +153,26 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public E getEdge(V v1, V v2) {
-        List<E> list = new ArrayList<>();
-        int i = 0;
-        if (hasEdge(v1, v2)) {
+        List<E> list ;
+        if (hasEdge(v1, v2))
+        {
             list = adjacencyList.get(v1);
             {
-                for ( i = 0; i < list.size(); i++) {
-                    if (list.get(i).v2().equals(v2)) {
-                        return  list.get(i);
+                for( int i = 0; i < list.size();i++)
+                {
+                    if (list.get(i).v2().equals(v2))
+                    {
+                        return list.get(i);
                     }
                 }
             }
         }
-        return list.get(i);
+        return null;
     }
     @Override
     public Set<V> allVertices()
     {
-        Set<V> listofvertices = adjacencyList.keySet();
-        return listofvertices;
+        return adjacencyList.keySet();
     }
 
     @Override
@@ -222,8 +237,20 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
     }
 
     @Override
-    public Map<V, E> getNeighbourhood(V v, int range) {
-        return null;
+    public Map<V, E> getNeighbourhood(V v, int range)
+    {
+        Map<V, E> neighbourhood = new HashMap<>();
+        for (V vertex : adjacencyList.keySet())
+        {
+            List<V> mincostpath = minimumCostPath(v, vertex, PathCostType.SUM_EDGES);
+            int size = mincostpath.size();
+            if (pathCost(mincostpath, PathCostType.SUM_EDGES) <= range)
+            {
+                E edge = (E) new Edge<>(mincostpath.get(size - 1), mincostpath.get(size - 2));
+                neighbourhood.put(vertex, edge);
+            }
+        }
+        return neighbourhood;
     }
 
     @Override
