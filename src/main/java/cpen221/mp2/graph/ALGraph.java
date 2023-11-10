@@ -172,6 +172,7 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
         return set;
     }
 
+
     @Override
     public Map<V, E> getNeighbourhood(V v) {
         Map<V, E> map = new HashMap<>();
@@ -206,6 +207,7 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
         return sum;
     }
 
+
     @Override
     public List<V> minimumCostPath(V source, V sink, PathCostType costType) {
         List<V> list = null;
@@ -222,6 +224,7 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
         }
         return list;
     }
+
 
     private List<V> sumCostPath(V source, V destination) {
         // Initialize distance and previous vertex
@@ -288,16 +291,48 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public Map<V, E> getNeighbourhood(V v, int range) {
-        return null;
+        Map<V,E> map = new HashMap<>();
+        for (V v1 : adjacencyList.keySet()) {
+            if(!v.equals(v1)){
+                List<V> vs = minimumCostPath(v, v1, PathCostType.SUM_EDGES);
+                if(pathCost(vs,PathCostType.SUM_EDGES)<range){
+                    E edge = getEdge(vs.get(vs.size() - 2), vs.get(vs.size() - 1));
+                    map.put(v1,edge);
+                }
+            }
+        }
+        return map;
     }
+
 
     @Override
     public int getDiameter(PathCostType costType) {
-        return 0;
+        TreeSet<Integer> ts = new TreeSet<>();
+        for (V v : adjacencyList.keySet()) {
+            int max = 0;
+            for (V v1 : adjacencyList.keySet()) {
+                if(!v.equals(v1)&&pathCost(minimumCostPath(v,v1,PathCostType.SUM_EDGES),PathCostType.SUM_EDGES)>max){
+                    max = pathCost(minimumCostPath(v,v1,PathCostType.SUM_EDGES),PathCostType.SUM_EDGES);
+                }
+            }
+            ts.add(max);
+        }
+        return ts.last();
     }
+
 
     @Override
     public V getCenter(PathCostType costType) {
-        return null;
+        TreeMap<Integer,V> ts = new TreeMap<>();
+        for (V v : adjacencyList.keySet()) {
+            int min = 0;
+            for (V v1 : adjacencyList.keySet()) {
+                if(!v.equals(v1)&&pathCost(minimumCostPath(v,v1,PathCostType.SUM_EDGES),PathCostType.SUM_EDGES)<min){
+                    min = pathCost(minimumCostPath(v,v1,PathCostType.SUM_EDGES),PathCostType.SUM_EDGES);
+                }
+            }
+            ts.put(min,v);
+        }
+        return ts.firstEntry().getValue();
     }
 }
