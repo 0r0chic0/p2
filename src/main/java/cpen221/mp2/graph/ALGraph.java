@@ -335,4 +335,35 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
         }
         return ts.firstEntry().getValue();
     }
+    public List<List<Vertex>> getAllPaths(Vertex source, Vertex destination) {
+        List<List<Vertex>> result = new ArrayList<>();
+        Set<Vertex> visited = new HashSet<>();
+        List<Vertex> path = new ArrayList<>();
+
+        dfs(source, destination, visited, path, result);
+
+        return result;
+    }
+
+    private void dfs(Vertex currentVertex, Vertex destination, Set<Vertex> visited, List<Vertex> path, List<List<Vertex>> result) {
+        visited.add(currentVertex);
+        path.add(currentVertex);
+
+        if (currentVertex.equals(destination)) {
+            result.add(new ArrayList<>(path));
+        } else {
+            List<E> neighbors = adjacencyList.get(currentVertex);
+            for (Edge neighbor : neighbors) {
+                Vertex neighborVertex = neighbor.v1();
+                if (!visited.contains(neighborVertex)) {
+                    dfs(neighborVertex, destination, visited, path, result);
+                }
+            }
+        }
+
+        visited.remove(currentVertex);
+        path.remove(path.size() - 1);
+    }
+
+
 }
