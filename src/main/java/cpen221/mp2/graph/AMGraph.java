@@ -39,28 +39,6 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public boolean addEdge(E e) {
-
-        if (!hasVertex(e.v1()) || !hasVertex(e.v2())) {
-            return false;
-        }
-
-        if (hasEdge(e)) {
-            return false;
-        }
-
-        adjacencyList.get(e.v1()).add(e);
-
-        if (!e.v1().equals(e.v2())) {
-            adjacencyList.get(e.v2()).add(e);
-        }
-
-        if (!e.v1().equals(e.v2())) {
-            adjacencyList.get(e.v2()).add(e);
-        }
-
-        return true;
-
-        /*
         boolean EdgeADD = false;
         if (!hasEdge(e) || !hasVertex(e.v1()) || !hasVertex(e.v2())) {
             return false;
@@ -70,8 +48,6 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
         }
         return EdgeADD;
-
-         */
     }
 
     @Override
@@ -113,6 +89,8 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
             sum = sum + length;
         }
         return sum;
+
+
     }
 
     @Override
@@ -133,27 +111,16 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public boolean removeEdge(V v1, V v2) {
-
-        if (hasEdge(v1, v2)) {
-            adjacencyList.get(v1).remove(v1);
-            return true;
-        }
-        return false;
-
-        /*
         boolean result = false;
         if(hasEdge(v1,v2))
         {
             adjacencyList.get(v1).remove(v1);
         }
         return false;
-
-         */
     }
 
     @Override
     public boolean removeVertex(V v) {
-
         boolean removal = false;
         if (adjacencyList.isEmpty()) {
             return false;
@@ -166,16 +133,6 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
             removal = false;
         }
         return removal;
-
-    }
-
-    private E findEdge(V v1, V v2) {
-        for (E edge : adjacencyList.get(v1)) {
-            if (edge.v2().equals(v2)) {
-                return edge;
-            }
-        }
-        return null;
     }
 
 
