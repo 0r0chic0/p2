@@ -39,6 +39,27 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public boolean addEdge(E e) {
+
+        if (!hasVertex(e.v1()) || !hasVertex(e.v2())) {
+            return false;
+        }
+
+        // Check if the edge is already present
+        if (hasEdge(e)) {
+            return false;
+        }
+
+        // Add the edge to both vertices
+        adjacencyList.get(e.v1()).add(e);
+
+        // Make sure not to add the same edge twice for undirected graphs
+        if (!e.v1().equals(e.v2())) {
+            adjacencyList.get(e.v2()).add(e);
+        }
+
+        return true;
+
+        /*
         boolean EdgeADD = false;
         if (!hasEdge(e) || !hasVertex(e.v1()) || !hasVertex(e.v2())) {
             return false;
@@ -48,6 +69,8 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
         }
         return EdgeADD;
+
+         */
     }
 
     @Override
@@ -67,6 +90,15 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public int edgeLength(V v1, V v2) {
+
+        for (E edge : adjacencyList.get(v1)) {
+            if (edge.v2().equals(v2)) {
+                return edge.length();
+            }
+        }
+        return 0; // Return 0 if the edge is not found.
+
+        /*
         int edgelength = 0;
         for (E edge : adjacencyList.get(v1)) {
             if (edge.v2().equals(v2)) {
@@ -76,6 +108,8 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
             return 0;
         }
         return edgelength;
+
+     */
     }
 
     @Override

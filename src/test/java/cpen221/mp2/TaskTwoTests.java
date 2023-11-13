@@ -25,9 +25,7 @@ public class TaskTwoTests {
         Edge<Vertex> e1 = new Edge<>(v1, v2, 5);
         Edge<Vertex> e2 = new Edge<>(v2, v3, 7);
         Edge<Vertex> e3 = new Edge<>(v1, v3, 9);
-        System.out.println(e1.length());
-        System.out.println(e2.length());
-        System.out.println(e3.length());
+
 
         g.addEdge(e1);
         g.addEdge(e2);

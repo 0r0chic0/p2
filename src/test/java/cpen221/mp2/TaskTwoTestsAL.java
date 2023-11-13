@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TaskTwoTestsAL {
 
     @Test
-    public void testEdgeLengthSumAM(){
-        /*
+    public void testEdgeLengthSumAL(){
 
         IGraph<Vertex, Edge<Vertex>> g = new ALGraph<>();
+
         Vertex v1 = new Vertex(1,"A");
         Vertex v2 = new Vertex(2, "B");
         Vertex v3 = new Vertex(3, "C");
@@ -27,9 +27,7 @@ public class TaskTwoTestsAL {
         Edge<Vertex> e1 = new Edge<>(v1, v2, 5);
         Edge<Vertex> e2 = new Edge<>(v2, v3, 7);
         Edge<Vertex> e3 = new Edge<>(v1, v3, 9);
-        System.out.println(e1.length());
-        System.out.println(e2.length());
-        System.out.println(e3.length());
+
 
         g.addEdge(e1);
         g.addEdge(e2);
@@ -39,15 +37,13 @@ public class TaskTwoTestsAL {
 
         assertEquals(expectedSum, g.edgeLengthSum());
 
-         */
     }
 
     @Test
-    public void testRemoveEdgeAM(){
+    public void testRemoveEdgeAL(){
 
         /*
-
-        AMGraph<Vertex, Edge<Vertex>> graph = new AMGraph<>(10);
+        IGraph<Vertex, Edge<Vertex>> graph = new ALGraph<>();
 
         Vertex v1 = new Vertex(1,"A");
         Vertex v2 = new Vertex(2, "B");
@@ -69,7 +65,7 @@ public class TaskTwoTestsAL {
         assertFalse(graph.removeEdge(e1));
 
         assertTrue(graph.removeEdge(v2, v3));
-        assertFalse(graph.hasEdge(v2, v3));
+        //assertFalse(graph.hasEdge(v2, v3));
 
          */
 
@@ -99,7 +95,7 @@ public class TaskTwoTestsAL {
     }
 
     @Test
-    public void testGetEdgeAM() {
+    public void testGetEdgeAL() {
         IGraph<Vertex, Edge<Vertex>> g = new ALGraph<>();
         Vertex v1 = new Vertex(1,"A");
         Vertex v2 = new Vertex(2, "B");
@@ -117,7 +113,7 @@ public class TaskTwoTestsAL {
     }
 
     @Test
-    public void testAllVerticesAM() {
+    public void testAllVerticesAL() {
         IGraph<Vertex, Edge<Vertex>> g = new ALGraph<>();
         Vertex v1 = new Vertex(1,"A");
         Vertex v2 = new Vertex(2, "B");
@@ -147,7 +143,7 @@ public class TaskTwoTestsAL {
     }
 
     @Test
-    public void testAllEdgesAM() {
+    public void testAllEdgesAL() {
         IGraph<Vertex, Edge<Vertex>> g = new ALGraph<>();
         Vertex v1 = new Vertex(1,"A");
         Vertex v2 = new Vertex(2, "B");
@@ -163,7 +159,7 @@ public class TaskTwoTestsAL {
     }
 
     @Test
-    public void testAllEdgesAgainAM() {
+    public void testAllEdgesAgainAL() {
         /*
         IGraph<Vertex, Edge<Vertex>> g = new ALGraph<>();
         Vertex v1 = new Vertex(1,"A");
