@@ -1,0 +1,6 @@
+- wrote ALgraph for task1
+- contents from task 3:
+  - getMinCostPath(V, V, PathCostType)
+  - pathCost(List<V>, PathCostType)
+- getDiameter(PathCostType)
+- wrote: Task 5: Boggle
