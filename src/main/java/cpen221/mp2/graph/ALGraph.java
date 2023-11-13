@@ -75,19 +75,35 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
 
     @Override
     public int edgeLengthSum() {
+
+        int sum = 0 ;
+        Set<E> alledges = allEdges();
+        List<E> converted = new ArrayList<>(alledges);
+        for(E edge : converted)
+        {
+            int length = edge.length();
+            sum = sum + length;
+        }
+        return sum;
+
+        /*
         int lengthSum = 0;
         for (V v : adjacencyList.keySet()) {
             List<E> es = adjacencyList.get(v);
             for (Edge edge : es) {
                 lengthSum += edge.length();
+                System.out.println(lengthSum);
             }
         }
         return lengthSum;
+
+         */
     }
 
 
     @Override
     public boolean removeEdge(E e) {
+
         boolean flag = false;
         for (V v : adjacencyList.keySet()) {
             List<E> es = adjacencyList.get(v);
