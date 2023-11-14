@@ -5,6 +5,15 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         implements IGraph<V, E> {
 
     /**
+     *
+     * Representation Invariants:
+     *
+     * 1. The adjacency list is consistent with the set of vertices, ensuring that each vertex in the list exists in the graph.
+     * 2. For each edge in the adjacency list, both endpoints must be valid vertices in the graph.
+     * 3. There exists a path between every pair of vertices in the graph.
+     */
+
+    /**
      * Create an empty graph with an upper-bound on the number of vertices
      *
      * @param maxVertices is greater than 1
@@ -21,7 +30,7 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
     }
 
     /**
-     * Adds a vertex to the existing graph
+     * Adds a vertex to the existing graph. Cannot add more vertices than there are maxVertices
      * @param v a vertex on the graph, must exist and be not null
      * @return if the vertex has been successfully added or not
      */
