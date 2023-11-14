@@ -42,7 +42,6 @@ public class TaskTwoTestsAL {
     @Test
     public void testRemoveEdgeAL(){
 
-        /*
         IGraph<Vertex, Edge<Vertex>> graph = new ALGraph<>();
 
         Vertex v1 = new Vertex(1,"A");
@@ -67,7 +66,6 @@ public class TaskTwoTestsAL {
         assertTrue(graph.removeEdge(v2, v3));
         //assertFalse(graph.hasEdge(v2, v3));
 
-         */
 
     }
 

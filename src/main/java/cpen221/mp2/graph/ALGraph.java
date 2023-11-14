@@ -229,10 +229,10 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
         List<V> list = null;
         switch (costType) {
             case MAX_EDGE:
-                maxCostPath();
+                list = maxCostPath(source, sink);
                 break;
             case MIN_EDGE:
-                minCostPath();
+                list = minCostPath(source, sink);
                 break;
             case SUM_EDGES:
                 list = sumCostPath(source, sink);
@@ -298,11 +298,113 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
     }
 
 
-    private void minCostPath() {
+    private List<V> minCostPath(V source, V destination) {
+        // Initialize distance and previous vertex
+        Map<V, Integer> distance = new HashMap<>();
+        Map<V, V> previous = new HashMap<>();
+        for (V vertex : adjacencyList.keySet()) {
+            distance.put(vertex, Integer.MAX_VALUE);
+            previous.put(vertex, null);
+        }
+        distance.put(source, 0);
+
+        // Use a priority queue to sort vertices based on distance
+        PriorityQueue<V> queue = new PriorityQueue<>(Comparator.comparingInt(distance::get));
+        queue.add(source);
+
+        while (!queue.isEmpty()) {
+            V current = queue.poll();
+
+            // If the current vertex has already calculated the shortest path, skip it
+            if (current.equals(destination)) {
+                break;
+            }
+
+            for (Edge edge : adjacencyList.get(current)) {
+                V neighbor = null;
+                if(edge.v1().equals(current)){
+                    neighbor = (V) edge.v2();
+                }else{
+                    neighbor = (V) edge.v1();
+                }
+                int newDistance = distance.get(current) + edge.length();
+
+                // If a shorter path is found, update the distance and previous vertex
+                if (newDistance < distance.get(neighbor)) {
+                    distance.put(neighbor, newDistance);
+                    previous.put(neighbor, current);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        // Build the shortest path
+        List<V> shortestPath = new ArrayList<>();
+        V current = destination;
+        while (previous.get(current) != null) {
+            shortestPath.add(current);
+            current = previous.get(current);
+        }
+        shortestPath.add(source);
+        Collections.reverse(shortestPath);
+
+        return shortestPath;
+
     }
 
 
-    private void maxCostPath() {
+    private List<V> maxCostPath(V source, V destination) {
+        // Initialize distance and previous vertex
+        Map<V, Integer> distance = new HashMap<>();
+        Map<V, V> previous = new HashMap<>();
+        for (V vertex : adjacencyList.keySet()) {
+            distance.put(vertex, Integer.MIN_VALUE); // Initialize to the minimum value
+            previous.put(vertex, null);
+        }
+        distance.put(source, 0);
+
+        // Use a priority queue to sort vertices based on negative distance
+        PriorityQueue<V> queue = new PriorityQueue<>(Comparator.comparingInt(distance::get).reversed());
+        queue.add(source);
+
+        while (!queue.isEmpty()) {
+            V current = queue.poll();
+
+            // If the current vertex has already calculated the shortest path, skip it
+            if (current.equals(destination)) {
+                break;
+            }
+
+            for (Edge edge : adjacencyList.get(current)) {
+                V neighbor = null;
+                if (edge.v1().equals(current)) {
+                    neighbor = (V) edge.v2();
+                } else {
+                    neighbor = (V) edge.v1();
+                }
+                int newDistance = Math.max(distance.get(current), edge.length());
+
+                // If a longer path is found, update the distance and previous vertex
+                if (newDistance > distance.get(neighbor)) {
+                    distance.put(neighbor, newDistance);
+                    previous.put(neighbor, current);
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        // Build the longest path
+        List<V> longestPath = new ArrayList<>();
+        V current = destination;
+        while (previous.get(current) != null) {
+            longestPath.add(current);
+            current = previous.get(current);
+        }
+        longestPath.add(source);
+        Collections.reverse(longestPath);
+
+        return longestPath;
+
     }
 
     @Override

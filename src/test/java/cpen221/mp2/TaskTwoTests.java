@@ -13,7 +13,8 @@ public class TaskTwoTests {
     @Test
     public void testEdgeLengthSumAM(){
 
-        IGraph<Vertex, Edge<Vertex>> g = new AMGraph<>(5);
+        IGraph<Vertex, Edge<Vertex>> g = new AMGraph<>(3);
+
         Vertex v1 = new Vertex(1,"A");
         Vertex v2 = new Vertex(2, "B");
         Vertex v3 = new Vertex(3, "C");
@@ -27,9 +28,9 @@ public class TaskTwoTests {
         Edge<Vertex> e3 = new Edge<>(v1, v3, 9);
 
 
-        g.addEdge(e1);
-        g.addEdge(e2);
-        g.addEdge(e3);
+        assertTrue(g.addEdge(e1));
+        assertTrue(g.addEdge(e2));
+        assertTrue(g.addEdge(e3));
 
         int expectedSum = e1.length() + e2.length() + e3.length();
 
@@ -38,8 +39,6 @@ public class TaskTwoTests {
 
     @Test
     public void testRemoveEdgeAM(){
-
-        /*
 
         AMGraph<Vertex, Edge<Vertex>> graph = new AMGraph<>(10);
 
@@ -65,7 +64,6 @@ public class TaskTwoTests {
         assertTrue(graph.removeEdge(v2, v3));
         assertFalse(graph.hasEdge(v2, v3));
 
-         */
 
     }
 
@@ -104,7 +102,7 @@ public class TaskTwoTests {
         g.addVertex(v2);
         g.addEdge(e1);
 
-        Edge retrievedEdge = g.getEdge(v1, v2);
+        Edge<Vertex> retrievedEdge = g.getEdge(v1, v2);
         assertNotNull(retrievedEdge);
         assertEquals(e1, retrievedEdge);
 

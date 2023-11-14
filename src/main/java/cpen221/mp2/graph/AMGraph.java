@@ -20,6 +20,11 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
     }
 
+    /**
+     * Adds a vertex to the existing graph
+     * @param v a vertex on the graph, must exist and be not null
+     * @return if the vertex has been successfully added or not
+     */
     @Override
     public boolean addVertex(V v) {
         boolean vertexaddition = false;
@@ -32,8 +37,29 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         }
     }
 
+    /**
+     *
+     * @param e an edge to be added
+     * @return if the edge has been successfully added or not
+     */
     @Override
     public boolean addEdge(E e) {
+
+        V v1 = e.v1();
+        V v2 = e.v2();
+
+        if (!hasVertex(v1) || !hasVertex(v2) || v1.equals(v2) || hasEdge(v1, v2)) {
+            return false;
+        }
+
+        adjacencymatrix[vertices.get(v1)][vertices.get(v2)] = e;
+        adjacencymatrix[vertices.get(v2)][vertices.get(v1)] = e;
+
+        return true;
+
+
+
+        /*
         boolean EdgeADD;
         if (!hasEdge(e) || !hasVertex(e.v1()) || !hasVertex(e.v2())) {
             return false;
@@ -46,19 +72,36 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
         }
         return EdgeADD;
+
+         */
     }
 
-
+    /**
+     *
+     * @param v a vertex on the graph
+     * @return
+     */
     @Override
     public boolean hasVertex(V v) {
         return vertices.containsKey(v);
     }
 
+    /**
+     *
+     * @param e an edge on the graph
+     * @return The edge
+     */
     @Override
     public boolean hasEdge(E e) {
         return hasEdge(e.v1(), e.v2());
     }
 
+    /**
+     *
+     * @param v1 A vertex on the graph
+     * @param v2 A vertex on the graph
+     * @return An adjacency matrix with the edge between the two provided vertexes
+     */
     @Override
     public boolean hasEdge(V v1, V v2) {
         if (vertices.containsKey(v1) && vertices.containsKey(v2)) {
@@ -67,6 +110,13 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         return false;
     }
 
+
+    /**
+     *
+     * @param v1 A vertex on the graph
+     * @param v2 A vertex on the graph
+     * @return The length of the edge contained by the vertices
+     */
     @Override
     public int edgeLength(V v1, V v2) {
         if (vertices.containsKey(v1) && vertices.containsKey(v2)) {
@@ -82,21 +132,48 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         return -1;
     }
 
+    /**
+     * Computes the sum of all edges
+     * @Return the sum of all edges
+     */
     @Override
-    public int edgeLengthSum()
-    {
+    public int edgeLengthSum() {
+
+        int sum = 0;
+
+        for (int i = 0; i < adjacencymatrix.length; i++) {
+            for (int j = i + 1; j < adjacencymatrix[i].length; j++) {
+                E edge = adjacencymatrix[i][j];
+                if (edge != null) {
+                    sum += edge.length();
+                    System.out.println(sum);
+                }
+            }
+        }
+
+        return sum;
+
+        /*
         int sum = 0;
         for (E[] row : adjacencymatrix) {
+
             for (E edge : row) {
                 if (edge != null) {
                     sum += edge.length();
+                    System.out.println(sum);
                 }
             }
         }
         return sum;
+
+         */
     }
 
-
+    /**
+     * Removes a vertex from the graph
+     * @param e An edge on the graph
+     * @return If the edge has been removed
+     */
     @Override
     public boolean removeEdge(E e) {
         if (hasEdge(e))
@@ -108,6 +185,14 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
             return true;
         }return false;
     }
+
+    /**
+     * Removes an edge from the graph
+     *
+     * @param v1 A vertex on the graph
+     * @param v2 A vertex on the graph
+     * @return true if the vertex was successfully removed
+     */
     @Override
     public boolean removeEdge(V v1, V v2) {
         boolean result = false ;
@@ -120,6 +205,11 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         return result;
     }
 
+    /**
+     *
+     * @param v a Vertex on the graph
+     * @return true if the vertex was successfully removed
+     */
     @Override
     public boolean removeVertex(V v)
     {
@@ -132,7 +222,12 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
     }
 
 
-
+    /**
+     *
+     * @param v1 A vertex on the graph
+     * @param v2 A vertex on the graph
+     * @return
+     */
     @Override
     public E getEdge(V v1, V v2)
     {
@@ -142,12 +237,21 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         }
         return null;
     }
+
+    /**
+     * Computes all vertices in the graph
+     * @return vertices the set of verticies
+     */
     @Override
     public Set<V> allVertices()
     {
         return vertices.keySet();
     }
 
+    /**
+     * Calculates all the edges in the graph
+     * @return allEdges the set of all edges in the graph
+     */
     @Override
     public Set<E> allEdges() {
         Set<E> edges = new HashSet<>();
@@ -161,7 +265,11 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         return edges;
     }
 
-
+    /**
+     * Calculates all the edges in the graph incident on the given vertex
+     * @param v a vertex on the graph
+     * @return allEdges the set of all edges that have the provided vertex as the end point
+     */
     @Override
     public Set<E> allEdges(V v)
     {
@@ -174,7 +282,6 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
                 }
             }
 
-
             for (int i = 0; i < adjacencymatrix.length; i++) {
                 if (adjacencymatrix[i][index] != null) {
                     edges.add(adjacencymatrix[i][index]);
@@ -184,7 +291,11 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         return edges;
     }
 
-
+    /**
+     * Computes the collection of all the neighbour vertices of the given vertex
+     * @param v a vertex on the graph
+     * @return A set of all edges that have the provided vertex as an end point
+     */
     @Override
     public Map<V, E> getNeighbourhood(V v) {
         Map<V, E> neighbourhood = new HashMap<>();
@@ -208,6 +319,12 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
         return neighbourhood;
     }
 
+    /**
+     * The cost of the path specified by the list of vertices
+     * @param path
+     * @param costType
+     * @return
+     */
     @Override
     public int pathCost(List<V> path, PathCostType costType) {
         int sum = 0;
@@ -288,10 +405,6 @@ public class AMGraph<V extends Vertex, E extends Edge<V>>
 
         return shortestPath;
     }
-
-
-
-
 
 
     @Override
