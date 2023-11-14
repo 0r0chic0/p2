@@ -1,0 +1,2 @@
+-created task2 methods for AMGraph
+-implemented task3 and task4 methods for AMGraph
