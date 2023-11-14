@@ -297,7 +297,6 @@ public class ALGraph<V extends Vertex, E extends Edge<V>>
 
     }
 
-
     private List<V> minCostPath(V source, V destination) {
         // Initialize distance and previous vertex
         Map<V, Integer> distance = new HashMap<>();
