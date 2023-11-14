@@ -1,0 +1,2 @@
+- wrote AMGraph for task2 and task1:
+- wrote AMGraph for task3 and task4:
