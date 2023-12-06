@@ -1,13 +1,47 @@
 plugins {
     id 'java'
+    id 'checkstyle'
     id 'jacoco'
 }
 
 group 'ca.ubc.ece.cpen221'
 version '1.0-SNAPSHOT'
 
+checkstyle {
+    toolVersion '10.12.3'
+}
+
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required  = true
+        html.required = false
+    }
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled true
+        html.enabled false
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.11"
+    reportsDir = file("$buildDir/reports/jacoco")
+
+}
+
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -19,5 +53,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport
 }
